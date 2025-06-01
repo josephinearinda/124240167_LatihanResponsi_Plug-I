@@ -65,9 +65,9 @@ void tambahData() {
 }
 
 void tampilData() {
-    cout << "================================\n";
-    cout << "      DAFTAR TERDUGA PELAKU      \n";
-    cout << "================================\n";
+    cout << "==============================================================\n";
+    cout << "                         DAFTAR PELAKU                        \n";
+    cout << "==============================================================\n";
     if (!root) {
         cout << "Data belom ada!\n";
     } else {
@@ -122,18 +122,20 @@ void undoAksi() {
         cout << "Tidak ada aksi yang bisa di undo!\n";
         return;
     }
-    Aksi* aksiTerakhir = top;
+    Aksi* logAksi = top;
     top = top->next;
 
-    if (aksiTerakhir->tipe == "tambah") {
+    if (logAksi->tipe == "tambah") {
         Pelaku* dummy = nullptr;
-        root = hapusNode(root, aksiTerakhir->data->nama, dummy);
+        root = hapusNode(root, logAksi->data->nama, dummy);
         cout << "Undo berhasil! Data penambahan dibatalkan!\n";
-    } else if (aksiTerakhir->tipe == "hapus") {
-        Pelaku* kembali = buatNode(aksiTerakhir->data->nama, aksiTerakhir->data->posisi, aksiTerakhir->data->nominal);
+    } else if (logAksi->tipe == "hapus") {
+        Pelaku* kembali = buatNode(logAksi->data->nama, logAksi->data->posisi, logAksi->data->nominal);
         root = insert(root, kembali);
         cout << "Undo berhasil! Data yang dihapus sudah dikembalikan!\n";
     }
+    delete logAksi->data;
+    delete logAksi;
 }
 
 int main() {
